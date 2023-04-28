@@ -3125,6 +3125,7 @@ dependencies = [
 name = "tauri-anime-rss"
 version = "0.0.0"
 dependencies = [
+ "anyhow",
  "chrono",
  "diesel",
  "dotenvy",
@@ -3137,6 +3138,7 @@ dependencies = [
  "serde_with 2.3.3",
  "tauri",
  "tauri-build",
+ "thiserror",
  "tokio",
 ]
 

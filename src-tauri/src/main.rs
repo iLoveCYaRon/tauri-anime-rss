@@ -5,7 +5,16 @@ mod model;
 mod service;
 use self::model::*;
 
-type InvokeResult<T> = Result<T, InvokeError>;
+pub(crate) type Result<T> = std::result::Result<T, anyhow::Error>;
+pub(crate) type InvokeResult<T> = std::result::Result<T, InvokeError>;
+impl From<anyhow::Error> for InvokeError {
+    fn from(e: anyhow::Error) -> Self {
+        InvokeError { 
+            code: None,
+            msg: format!("{:#}", e)
+        }
+    }
+}
 
 /* Command Field Start */
 #[tauri::command]
@@ -16,14 +25,14 @@ fn greet(name: &str) -> String {
 #[tauri::command]
 fn get_channel_list() -> InvokeResult<GetChannelListResponse> {
     Ok(GetChannelListResponse {
-        channel_list: Vec::new(),
+        channel_list: service::rss_service::get_channel_list()?
     })
 }
 
 #[tauri::command]
 fn get_channel_detail(channel_id: &str) -> InvokeResult<GetChannelDetailResponse> {
     Ok(GetChannelDetailResponse {
-        item_list: Vec::new(),
+        item_list: service::rss_service::get_channel_detail(channel_id)?,
     })
 }
 

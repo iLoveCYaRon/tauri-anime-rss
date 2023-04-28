@@ -1,3 +1,5 @@
+mod error;
+
 use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug)]
@@ -56,25 +58,27 @@ pub(crate) enum ProxyType {
 
 #[derive(Deserialize, Serialize, Debug)]
 pub(crate) struct RssChannel {
-    id: String,
-    name: String,
-    status: ChannelStatus,
-    item_count: i32,
+    pub(crate) id: String,
+    pub(crate) title: String,
+    pub(crate) desc: String,
+    pub(crate) link: String,
+    pub(crate) status: ChannelStatus,
+    pub(crate) item_count: u64,
 }
 
 #[derive(Deserialize, Serialize, Debug)]
 pub(crate) struct RssItem {
     pub(crate) id: String,
     pub(crate) title: String,
-    pub(crate) description: String,
+    pub(crate) desc: String,
     pub(crate) link: String,
-    pub(crate) pub_date: i64,
+    pub(crate) pub_date: String,
 }
 
 #[derive(Deserialize, Serialize, Debug)]
 pub(crate) struct InvokeError {
-    pub(crate) code: i32,
-    pub(crate) msg: Option<String>,
+    pub(crate) code: Option<i32>,
+    pub(crate) msg: String,
 }
 
 #[derive(Deserialize, Serialize, Debug)]
