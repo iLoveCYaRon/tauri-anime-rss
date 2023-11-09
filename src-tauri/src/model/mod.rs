@@ -1,21 +1,25 @@
 mod error;
 
-use serde::{Deserialize, Serialize};
+use sonic_rs::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug)]
 pub(crate) struct GetChannelListResponse {
-    pub(crate) channel_list: Vec<RssChannel>,
+    pub(crate) channel_list: Vec<Channel>,
 }
 
 #[derive(Deserialize, Serialize, Debug)]
-pub(crate) struct GetChannelDetailResponse {
-    pub(crate) item_list: Vec<RssItem>,
+pub(crate) struct GetFeedListResponse {
+    pub(crate) feed_list: Vec<Feed>,
 }
 
 #[derive(Deserialize, Serialize, Debug)]
 pub(crate) struct CreateChannelResponse {
     pub(crate) channel_id: String,
 }
+
+// pub(crate) struct RefreshAllChannelRequest;
+
+// pub(crate) struct RefreshAllChannelResponse;
 
 #[derive(Deserialize, Serialize, Debug)]
 pub(crate) struct GetSettingResponse {
@@ -57,7 +61,7 @@ pub(crate) enum ProxyType {
 }
 
 #[derive(Deserialize, Serialize, Debug)]
-pub(crate) struct RssChannel {
+pub(crate) struct Channel {
     pub(crate) id: String,
     pub(crate) title: String,
     pub(crate) desc: String,
@@ -67,7 +71,7 @@ pub(crate) struct RssChannel {
 }
 
 #[derive(Deserialize, Serialize, Debug)]
-pub(crate) struct RssItem {
+pub(crate) struct Feed {
     pub(crate) id: String,
     pub(crate) title: String,
     pub(crate) desc: String,

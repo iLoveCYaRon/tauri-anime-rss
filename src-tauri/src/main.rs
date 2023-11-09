@@ -9,9 +9,9 @@ pub(crate) type Result<T> = std::result::Result<T, anyhow::Error>;
 pub(crate) type InvokeResult<T> = std::result::Result<T, InvokeError>;
 impl From<anyhow::Error> for InvokeError {
     fn from(e: anyhow::Error) -> Self {
-        InvokeError { 
+        InvokeError {
             code: None,
-            msg: format!("{:#}", e)
+            msg: format!("{:#}", e),
         }
     }
 }
@@ -25,14 +25,14 @@ fn greet(name: &str) -> String {
 #[tauri::command]
 fn get_channel_list() -> InvokeResult<GetChannelListResponse> {
     Ok(GetChannelListResponse {
-        channel_list: service::rss_service::get_channel_list()?
+        channel_list: service::channel_service::get_channel_list()?,
     })
 }
 
 #[tauri::command]
-fn get_channel_detail(channel_id: &str) -> InvokeResult<GetChannelDetailResponse> {
-    Ok(GetChannelDetailResponse {
-        item_list: service::rss_service::get_channel_detail(channel_id)?,
+fn get_feed_list(channel_id: &str) -> InvokeResult<GetFeedListResponse> {
+    Ok(GetFeedListResponse {
+        feed_list: service::feed_service::get_feed_list(channel_id)?,
     })
 }
 
@@ -44,18 +44,23 @@ fn create_channel(link: &str) -> InvokeResult<CreateChannelResponse> {
 }
 
 #[tauri::command]
-fn get_setting() -> InvokeResult<GetSettingResponse> {
-    Ok(GetSettingResponse {
-        setting: build_setting(),
-    })
+fn refresh_all_channel() -> InvokeResult<()> {
+    Ok(())
 }
 
-#[tauri::command]
-fn update_setting() -> InvokeResult<UpdateSettingResponse> {
-    Ok(UpdateSettingResponse {
-        setting: build_setting(),
-    })
-}
+// #[tauri::command]
+// fn get_setting() -> InvokeResult<GetSettingResponse> {
+//     Ok(GetSettingResponse {
+//         setting: build_setting(),
+//     })
+// }
+
+// #[tauri::command]
+// fn update_setting() -> InvokeResult<UpdateSettingResponse> {
+//     Ok(UpdateSettingResponse {
+//         setting: build_setting(),
+//     })
+// }
 
 /* Command Field End */
 
@@ -81,10 +86,9 @@ fn main() {
         .invoke_handler(tauri::generate_handler![
             greet,
             get_channel_list,
-            get_channel_detail,
+            get_feed_list,
             create_channel,
-            get_setting,
-            update_setting,
+            refresh_all_channel,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

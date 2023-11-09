@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS channel (
     `item_count` INT NOT NULL DEFAULT ""
 );
 
-CREATE TABLE IF NOT EXISTS channel_item (
+CREATE TABLE IF NOT EXISTS feed (
     `id` TEXT NOT NULL PRIMARY KEY,
     `channel_id` TEXT NOT NULL,
     `title` TEXT NOT NULL DEFAULT "",
@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS channel_item (
     `link` TEXT NOT NULL DEFAULT "",
     `pub_date` TEXT NOT NULL DEFAULT "",
     `torrent_link` TEXT NOT NULL DEFAULT "",
+    `read_flag` BOOLEAN NOT NULL DEFAULT 0,
     FOREIGN KEY (`channel_id`) REFERENCES channel(`id`) ON DELETE CASCADE ON UPDATE RESTRICT
 );
 

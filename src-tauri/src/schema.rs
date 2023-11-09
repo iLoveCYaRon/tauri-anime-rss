@@ -1,6 +1,4 @@
-// @generated automatically by Diesel CLI.
-
-diesel::table! {
+table! {
     category (id) {
         id -> Text,
         title -> Text,
@@ -9,14 +7,14 @@ diesel::table! {
     }
 }
 
-diesel::table! {
+table! {
     category_channel (category_id, channel_id) {
         category_id -> Text,
         channel_id -> Text,
     }
 }
 
-diesel::table! {
+table! {
     channel (id) {
         id -> Text,
         title -> Text,
@@ -27,8 +25,8 @@ diesel::table! {
     }
 }
 
-diesel::table! {
-    channel_item (id) {
+table! {
+    feed (id) {
         id -> Text,
         channel_id -> Text,
         title -> Text,
@@ -36,16 +34,17 @@ diesel::table! {
         link -> Text,
         pub_date -> Text,
         torrent_link -> Text,
+        read_flag -> Bool,
     }
 }
 
-diesel::joinable!(category_channel -> category (category_id));
-diesel::joinable!(category_channel -> channel (channel_id));
-diesel::joinable!(channel_item -> channel (channel_id));
+joinable!(category_channel -> category (category_id));
+joinable!(category_channel -> channel (channel_id));
+joinable!(feed -> channel (channel_id));
 
-diesel::allow_tables_to_appear_in_same_query!(
+allow_tables_to_appear_in_same_query!(
     category,
     category_channel,
     channel,
-    channel_item,
+    feed,
 );
